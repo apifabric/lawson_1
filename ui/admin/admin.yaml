@@ -1,0 +1,329 @@
+about:
+  date: November 08, 2024 05:42:50
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 10
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Category:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: id
+    description: Represents product categories to which products belong.
+    info_list: Represents product categories to which products belong.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - category_id
+      name: ProductCategoryList
+      resource: ProductCategory
+    type: Category
+    user_key: name
+  Customer:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: email
+    - name: balance
+    - name: credit_limit
+    - name: id
+    description: Represents a customer with personal and contact information.
+    info_list: Represents a customer with personal and contact information.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - customer_id
+      name: OrderList
+      resource: Order
+    type: Customer
+    user_key: name
+  Department:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: id
+    description: Contains information about company departments.
+    info_list: Contains information about company departments.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - department_id
+      name: EmployeeDepartmentList
+      resource: EmployeeDepartment
+    type: Department
+    user_key: name
+  Employee:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: position
+      required: true
+    - name: id
+    description: Represents employees working in the organization.
+    info_list: Represents employees working in the organization.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - employee_id
+      name: EmployeeDepartmentList
+      resource: EmployeeDepartment
+    type: Employee
+    user_key: name
+  EmployeeDepartment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: department_id
+      required: true
+    - name: employee_id
+      required: true
+    description: Junction table for many-to-many relationship between employees and
+      departments.
+    info_list: Junction table for many-to-many relationship between employees and
+      departments.
+    tab_groups:
+    - direction: toone
+      fks:
+      - department_id
+      name: department
+      resource: Department
+    - direction: toone
+      fks:
+      - employee_id
+      name: employee
+      resource: Employee
+    type: EmployeeDepartment
+    user_key: id
+  Inventory:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: product_id
+      required: true
+    - name: supplier_id
+      required: true
+    - name: stock_quantity
+    description: Tracks product stocks in inventory.
+    info_list: Tracks product stocks in inventory.
+    tab_groups:
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    - direction: toone
+      fks:
+      - supplier_id
+      name: supplier
+      resource: Supplier
+    type: Inventory
+    user_key: id
+  Item:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: order_id
+      required: true
+    - name: product_id
+      required: true
+    - name: quantity
+      required: true
+    - name: amount
+    - name: unit_price
+      required: true
+    description: Represents individual line items within an order.
+    info_list: Represents individual line items within an order.
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: Item
+    user_key: id
+  Order:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+      required: true
+    - name: amount_total
+    - name: date_shipped
+      type: DATETIME
+    description: Represents an order placed by a customer, including order details.
+    info_list: Represents an order placed by a customer, including order details.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - order_id
+      name: ItemList
+      resource: Item
+    - direction: tomany
+      fks:
+      - order_id
+      name: SalesReportList
+      resource: SalesReport
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    type: Order
+    user_key: id
+  Product:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: unit_price
+      required: true
+    - name: id
+    description: Contains information about products available for purchase.
+    info_list: Contains information about products available for purchase.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - product_id
+      name: InventoryList
+      resource: Inventory
+    - direction: tomany
+      fks:
+      - product_id
+      name: ItemList
+      resource: Item
+    - direction: tomany
+      fks:
+      - product_id
+      name: ProductCategoryList
+      resource: ProductCategory
+    type: Product
+    user_key: name
+  ProductCategory:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: category_id
+      required: true
+    - name: product_id
+      required: true
+    description: Junction table for many-to-many relationship between products and
+      categories.
+    info_list: Junction table for many-to-many relationship between products and categories.
+    tab_groups:
+    - direction: toone
+      fks:
+      - category_id
+      name: category
+      resource: Category
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: ProductCategory
+    user_key: id
+  SalesReport:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: order_id
+      required: true
+    - name: report_date
+      type: DATETIME
+    - name: total_sales
+    description: Represents sales report data.
+    info_list: Represents sales report data.
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    type: SalesReport
+    user_key: id
+  Supplier:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: contact_email
+    - name: id
+    description: Represents suppliers who provide products.
+    info_list: Represents suppliers who provide products.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - supplier_id
+      name: InventoryList
+      resource: Inventory
+    type: Supplier
+    user_key: name
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'

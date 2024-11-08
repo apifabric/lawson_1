@@ -1,0 +1,1 @@
+build project by reading the database design from the link https://www.lawsonguru.com/gurucontent/datadict/90/tables/index.html
